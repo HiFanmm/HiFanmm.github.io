@@ -74,7 +74,7 @@
     <article id="post-test" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2021/10/09/test/" class="article-date">
-  <time class="dt-published" datetime="2021-10-09T06:25:54.269Z" itemprop="datePublished">2021-10-09</time>
+  <time class="dt-published" datetime="2021-10-09T06:48:01.005Z" itemprop="datePublished">2021-10-09</time>
 </a>
     
   </div>
@@ -83,7 +83,112 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h1 id="集合"><a href="#集合" class="headerlink" title="集合"></a>集合</h1><p>Collection                            Map</p>
+<p>list，queue，set                map</p>
+<p>用==来进行浮点数等值判断的代码，而且这种浮点数的精度问题在工作中还是有相当的概率会遇到的，一旦没有发现，上线后往往就会出大问题，要背锅的。。。</p>
+<h3 id="Iterator"><a href="#Iterator" class="headerlink" title="Iterator"></a>Iterator</h3><p>集合框架提供的两个遍历接口Iterator和ListIterator</p>
+<p><strong>Iterator：</strong></p>
+<ul>
+<li>hasNext()：判断集合中是否存在下一个对象</li>
+<li>next()：返回集合中的下一个对象，并将访问指针移动一位</li>
+<li>remove()：删除集合中调用 next() 方法返回的对象</li>
+<li>forEach()：它允许使用增强for 循环遍历对象。</li>
+</ul>
+<p><strong>Iterator</strong> 是提供集合操作内部对象的一个迭代器，它可以遍历、移除对象，且只能够单向移动。</p>
+<p><strong>Iterable</strong>是对Iterator进行了封装，在 JDK 1.8 时，实现了 Iterable 接口的集合可以使用增强 for 循环遍历集合对象</p>
+<p><strong>ListIterator：</strong>前者的优化版，支持在任意一个位置进行前后双向遍历。</p>
+<h3 id="Map"><a href="#Map" class="headerlink" title="Map"></a>Map</h3><p>map存储的是&lt;key,value&gt;键值对，查找元素是通过key去查找对应的value</p>
+<p>key 不可重复，而 value 可重复。</p>
+<p>Map 体系下主要分为 AbstractMap 和 SortedMap两类集合。</p>
+<h4 id="AbstractMap"><a href="#AbstractMap" class="headerlink" title="AbstractMap"></a>AbstractMap</h4><p>hashtable：早期版本，所有的方法都被加上了 synchronized 关键字，线程安全的，因为性能太低，所以现在被弃用了。</p>
+<p><strong>hashMap：</strong></p>
+<ol>
+<li>线程不安全的。</li>
+<li>底层是用数组 + 链表 + 红黑树这三种数据结构实现。</li>
+<li>hashmap默认容量是16，每次扩容2倍，如果链表的长度大于 8 时，且数组的长度大于 64 的时候则会转换成红黑树数据结构，红黑树元素小于6时，会转换成链表。</li>
+<li>如果new hashmap的时候输入27，则hashmap的初始容量会自动变成32.</li>
+<li>采用尾插法。</li>
+<li>插入元素时，通过计算元素的哈希值，通过哈希映射函数转换为数组下标；查找元素时，同样通过哈希映射函数得到数组下标定位元素的位置。</li>
+</ol>
+<p><strong>LinkedHashMap：</strong></p>
+<ol>
+<li>由于继承了hashmap，所以也是线程不安全的。</li>
+<li> 在HashMap 的基础上添加了一条双向链表，默认存储各个元素的插入顺序。</li>
+<li>由于这条双向链表，使得 LinkedHashMap 可以实现 <strong>LRU缓存淘汰策略</strong>，因为我们可以设置这条双向链表按照元素的访问次序进行排序。</li>
+</ol>
+<p><strong>LRU缓存淘汰策略：淘汰近期没有使用的数据，维持动态数据平衡</strong></p>
+<p><strong>核心思想是“如果数据最近被访问过，那么将来被访问的几率也更高”。</strong></p>
+<p><strong>ConcurrentHashMap：</strong>线程安全的，多线程高并发的场景，优先使用此map</p>
+<p><strong>weakHashMap：</strong></p>
+<ol>
+<li>它依赖普通的 Map 进行实现，是一个非线程安全的集合</li>
+<li>它的键是一种弱键，放入 WeakHashMap 时，随时会被回收掉，所以不能确保某次访问元素一定存在</li>
+<li>WeakHashMap 通常作为缓存使用，适合存储那些只需访问一次、或只需保存短暂时间的键值对</li>
+</ol>
+<h4 id="SortedMap"><a href="#SortedMap" class="headerlink" title="SortedMap"></a>SortedMap</h4><p>实现类：</p>
+<p><strong>TreeMap：</strong>是Key有序的map类集合，</p>
+<ol>
+<li>TreeMap 不是线程安全的。</li>
+<li>它底层是由红黑树这种数据结构实现的，所以操作的时间复杂度恒为O(logN)</li>
+<li>TreeMap 可以对 key 进行自然排序或者自定义排序，自定义排序时需要传入 Comparator，而自然排序要求key实现了 Comparable 接口</li>
+</ol>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><p>Set内部存储的是一系列不可重复的对象，默认是一个无序集合，对象排列顺序不一。</p>
+<p> Set 至多只能存储一个 NULL 值元素</p>
+<p>实现类：</p>
+<p><strong>HashSet：</strong>无序无重复</p>
+<ol>
+<li>底层数据结构：HashSet 也是采用数组 + 链表 + 红黑树实现</li>
+<li>线程安全性：由于采用 HashMap 实现，而 HashMap 本身线程不安全，在HashSet 中没有添加额外的同步策略，所以 HashSet 也线程不安全</li>
+<li>存入 HashSet 的对象的状态最好不要发生变化，因为有可能改变状态后，在集合内部出现两个元素 o1.equals(o2)，破坏了 equals() 的语义。</li>
+</ol>
+<p><strong>LinkedHashSet：</strong> LinkedHashMap 是采用 HashMap 和双向链表实现的，这条双向链表中保存了元素的插入顺序。所以 LinkedHashSet 可以按照元素的插入顺序遍历元素。同时他还继承了HashSet，具有HashSet的优点。</p>
+<ol>
+<li>它继承了 HashSet，而 HashSet 默认是采用 HashMap 存储数据的，但是 LinkedHashSet 调用父类构造方法初始化 map 时是 LinkedHashMap 而不是 HashMap，这个要额外注意一下</li>
+<li>由于 LinkedHashMap 不是线程安全的，且在 LinkedHashSet 中没有添加额外的同步策略，所以 LinkedHashSet 集合也不是线程安全的</li>
+</ol>
+<p><strong>TreeSet：</strong>基于 TreeMap 的实现，有序无重复，底层的数据结构是数组 + 红黑树。</p>
+<ol>
+<li>TreeSet 的所有操作都会转换为对 TreeMap 的操作，TreeMap 采用红黑树实现，任意操作的平均时间复杂度为 O(logN)</li>
+<li>TreeSet 是一个线程不安全的集合</li>
+<li>TreeSet 常应用于对不重复的元素定制排序，例如玩家战力排行榜</li>
+</ol>
+<p><strong>注意:TreeSet 判断元素是否重复的方法是判断 compareTo() 方法是否返回0，而不是调用 hashcode() 和 equals() 方法，如果返回 0 则认为集合内已经存在相同的元素，不会再加入到集合当中。</strong></p>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><p>内部存储的时候一系列可以重复的对象，是一个有序集合，对象按照插入顺序排列。</p>
+<p>List中常用的有ArrayList和LinkedList.</p>
+<p><strong>ArrayList ：</strong> 非线程安全，底层是数组，查找快，插入和删除慢(插入头部或者尾部其实也挺快的)</p>
+<p>具备随机访问特点，访问元素的效率较高，ArrayList 在频繁插入、删除集合元素的场景下效率较低。</p>
+<p>默认容量为10，扩容1.5倍</p>
+<p><strong>LinkedList：</strong>非线程安全的，双向链表数据结构，增删快、查询慢的特点</p>
+<p>由于链表的内存地址非连续，所以它不具备随机访问的特点</p>
+<ol>
+<li>优势：LinkedList 底层没有扩容机制，使用双向链表存储元素，所以插入和删除元素效率较高，适用于频繁操作元素的场景</li>
+<li>劣势：LinkedList 不具备随机访问的特点，查找某个元素只能从 head 或 tail 指针一个一个比较，所以查找中间的元素时效率很低</li>
+<li>查找优化：LinkedList 查找某个下标 index 的元素时做了优化，若 index &gt; (size / 2)，则从 head 往后查找，否则从 tail 开始往前查找</li>
+</ol>
+<p>List中不常用的有Vector和stack</p>
+<p><strong>Vector：</strong>线程安全的，性能较差，基本弃用。</p>
+<p><strong>Stack：</strong>先进后出，继承Vector，线程安全的，性能也比较差<strong>。</strong></p>
+<p><strong>CopyOnWriteArrayList：</strong>在高并发情况下，可以使用此集合。</p>
+<h3 id="Queue"><a href="#Queue" class="headerlink" title="Queue"></a>Queue</h3><p>是一个队列容器，特性和list一样，但是只能从队头和队尾进行操作对象。</p>
+<h4 id="AbsractQueue"><a href="#AbsractQueue" class="headerlink" title="AbsractQueue:"></a>AbsractQueue:</h4><p><strong>BlockingQueue：</strong>阻塞队列，先进先出，经常作为数据缓冲区来使用。</p>
+<p><strong>PriorityQueue：</strong> </p>
+<ol>
+<li><p>基于优先级堆实现的优先级队列，而堆是采用数组实现</p>
+</li>
+<li><p>应用场景：适用于元素按优先级处理的业务场景，例如用户在请求人工客服需要排队时，根据用户的VIP等级进行 插队 处理，等级越高，越先安排客服。</p>
+</li>
+</ol>
+<h4 id="Deque-双向队列"><a href="#Deque-双向队列" class="headerlink" title="Deque:(双向队列)"></a>Deque:(双向队列)</h4><p><strong>ArrayDeque：</strong></p>
+<ol>
+<li>线程不安全的，在没有外部同步的情况下，不能再多线程环境下使用。</li>
+<li>可以作为队列来使用，效率高于<code>LinkedList</code>。</li>
+<li>也可以作为栈来使用，效率高于<code>Stack</code>；</li>
+<li><code>ArrayDeque</code>不支持<code>null</code>值。</li>
+</ol>
+<p><strong>LinkedList：</strong></p>
+<p><strong>Timsort：</strong>结合了归并排序(merge sort)和插入排序(insertion sort)而得出的排序算法</p>
+<p><strong>JDK另外提供两个工具类 Collections 和 Arrays</strong></p>
+
       
     </div>
     <footer class="article-footer">
